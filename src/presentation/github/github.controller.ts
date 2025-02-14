@@ -9,14 +9,32 @@ export class GithubController {
   ) {}
 
   webHookHandler = async (req: Request, res: Response) => {
-    const { username = 'test name' } = req.params;
+    // Obtiene el tipo de evento
+    const gitHubEvent = req.headers['x-github-event'] ?? 'unknown';
+    // Obtiene la firma del encabezado de la solicitud
+    const signature = req.headers['x-hub-signature'] ?? 'unknown';
+    // Obtiene el ID de entrega de la solicitud
+    const payload = req.body;
 
-    return this.githubService.webHookHandler(username)
-      .then((data) => {
-        res.send(data);
-      })
-      .catch((error) => {
-        res.status(500).send(error);
-      })
+    let message = '';
+
+    switch (gitHubEvent) {
+      case 'star':
+        message = this.githubService.onStar(payload);
+        break;
+
+      case 'issues':
+        message = this.githubService.onIssue(payload);
+        break;
+
+      default:
+        res.status(202).send(`No action taken for ${gitHubEvent}`);
+        return; // Asegura que no se envíe otra respuesta después
+    }
+
+    console.log("🚀 ~ GithubController ~ webHookHandler= ~ message:", message);
+    res.status(200).send('Accepted');
+
   }
 }
+
