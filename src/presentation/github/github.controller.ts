@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { GithubService } from "../../services/github.service";
+import { DiscordService } from "../../services/discord.service";
 
 
 export class GithubController {
 
   constructor(
-    private readonly githubService: GithubService
+    private readonly githubService: GithubService,
+    private readonly discordService: DiscordService
   ) {}
 
   webHookHandler = async (req: Request, res: Response) => {
@@ -32,9 +34,16 @@ export class GithubController {
         return; // Asegura que no se envíe otra respuesta después
     }
 
-    console.log("🚀 ~ GithubController ~ webHookHandler= ~ message:", message);
-    res.status(200).send('Accepted');
+    // Enviar mensaje a Discord
+    await this.discordService.notify(message)
+      .then(() => {
+        res.status(200).send('Accepted');
+      })
+      .catch(() => {
+        console.log('Error sending message to Discord');
+        res.status(500).json({ error: 'Error sending message to Discord' });
+      });
 
-  }
+  };
 }
 

@@ -20,5 +20,10 @@ npx tsc --init --outDir dist/ --rootDir src
   "dev": "tsnd --respawn --clear src/app.ts",
   "build": "rimraf ./dist && tsc",
   "start": "npm run build && node dist/app.js"
+```
 
+## Crear Webhook de github
 
+1 Settings - webhooks - add webhook
+
+2 Url (https valid) ngrok - content type (application/json) - Let me select individual events - Add webhook
