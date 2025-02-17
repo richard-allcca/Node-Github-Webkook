@@ -22,8 +22,19 @@ npx tsc --init --outDir dist/ --rootDir src
   "start": "npm run build && node dist/app.js"
 ```
 
+## Para probar el local el envio de mensajes a discord usa NGROk
+
+```bash
+  npm run dev
+  ngrok http http://localhost:3000
+```
+
 ## Crear Webhook de github
 
 1 Settings - webhooks - add webhook
 
 2 Url (https valid) ngrok - content type (application/json) - Let me select individual events - Add webhook
+
+## DOCS
+
+[Validation webhook deliveries](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries)
