@@ -22,7 +22,7 @@ npx tsc --init --outDir dist/ --rootDir src
   "start": "npm run build && node dist/app.js"
 ```
 
-## Para probar el local el envio de mensajes a discord usa NGROk
+## Para probar el local el envió de mensajes a discord usa NGROk
 
 ```bash
   npm run dev
